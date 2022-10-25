@@ -6,40 +6,94 @@
 /*   By: rlaforge <rlaforge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 15:39:33 by rlaforge          #+#    #+#             */
-/*   Updated: 2022/10/21 17:53:51 by rlaforge         ###   ########.fr       */
+/*   Updated: 2022/10/25 19:18:00 by rlaforge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*get_path(char *str)
+char	*strjoin_pipex(char *s1, char *s2)
+{
+	char	*str;
+	int		length;
+
+	if (!s1 || !s2)
+		return (NULL);
+	length = ft_strlen(s1) + ft_strlen(s2) + 2;
+	str = malloc(sizeof(char) * length);
+	if (!str)
+		return (NULL);
+	ft_strlcpy(str, s1, length);
+	ft_strlcat(str, "/", length);
+	ft_strlcat(str, s2, length);
+	return (str);
+}
+
+char	*create_path(char *cmd, char **envp)
+{
+	char	**path_list;
+	char	*path;
+	int		i;
+
+	i = -1;
+	while (envp[++i])
+		if (ft_strnstr(envp[i], "PATH=/", ft_strlen("PATH=/")))
+			path_list = ft_split(envp[i], ':');
+	i = 0;
+	while (path_list[i])
+	{
+		path = strjoin_pipex(path_list[i++], cmd);
+		if (!access(path, X_OK))
+		{
+			free(path_list);
+			return (path);
+		}
+		free(path);
+	}
+	free(path_list);
+	return (NULL);
+}
+
+char	*get_path(char *cmd, char **envp)
 {
 	char	*path;
 
-	return (path);
+	if (cmd[0] == '/' || cmd[0] == '.')
+	{
+		path = ft_strdup(cmd);
+		if (!access(path, X_OK))
+			return (path);
+	}
+	else
+	{
+		path = create_path(cmd, envp);
+		if (path)
+			return (path);
+	}
+	free(path);
+	return (NULL);
 }
 
 void	cmd1(char **av, char **envp, int pipefd[2])
 {
-	int	fd_in;
+	int		fd_in;
 	char	**args;
 	char	*path;
 
-	fd_in = open(av[4], O_WRONLY | O_TRUNC | O_CREAT, 0600);
+	fd_in = open(av[1], O_RDONLY);
 	if (fd_in < 0)
 		ft_error("Error FD CMD1");
 	args = ft_split(av[3], ' ');
-	path = get_path(args[0]);
+	path = get_path(args[0], envp);
 	dup2(fd_in, STDIN_FILENO);
 	dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[0]);
-	if (!access(path, X_OK))
-		if ((execve(path, args, envp)) == -1)
-		{
-			free(path);
-			free(args);
-			ft_error("Error EXECVE CMD1");
-		}
+	if (!path || (execve(path, args, envp)) == -1)
+	{
+		free(path);
+		free(args);
+		ft_error("Error EXECVE CMD1");
+	}
 	free(args);
 	free(path);
 }
@@ -50,21 +104,20 @@ void	cmd2(char **av, char **envp, int pipefd[2])
 	char	**args;
 	char	*path;
 
-	fd_out = open(av[1], O_RDONLY);
+	fd_out = open(av[4], O_WRONLY | O_TRUNC | O_CREAT, 0600);
 	if (fd_out < 0)
 		ft_error("Error FD CMD2");
 	args = ft_split(av[2], ' ');
-	path = get_path(args[0]);
+	path = get_path(args[0], envp);
 	dup2(fd_out, STDOUT_FILENO);
 	dup2(pipefd[0], STDIN_FILENO);
 	close(pipefd[1]);
-	if (!access(path, X_OK))
-		if ((execve(path, args, envp)) == -1)
-		{
-			free(path);
-			free(args);
-			ft_error("Error EXECVE CMD2");
-		}
+	if (!path || (execve(path, args, envp)) == -1)
+	{
+		free(path);
+		free(args);
+		ft_error("Error EXECVE CMD2");
+	}
 	free(args);
 	free(path);
 }

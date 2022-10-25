@@ -6,7 +6,7 @@
 /*   By: rlaforge <rlaforge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 16:20:10 by rlaforge          #+#    #+#             */
-/*   Updated: 2022/09/20 16:07:24 by rlaforge         ###   ########.fr       */
+/*   Updated: 2022/10/25 19:05:23 by rlaforge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,11 @@
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/uio.h>
-#include <sys/wait.h>
-#include <fcntl.h>
+# include <sys/wait.h>
+# include <fcntl.h>
+
+# include <string.h>
+# include <errno.h>
 
 void	ft_error(char *errormsg);
 
