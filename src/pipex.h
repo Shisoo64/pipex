@@ -6,7 +6,7 @@
 /*   By: rlaforge <rlaforge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/18 16:20:10 by rlaforge          #+#    #+#             */
-/*   Updated: 2022/10/25 19:05:23 by rlaforge         ###   ########.fr       */
+/*   Updated: 2022/10/27 18:57:51 by rlaforge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@
 # include <errno.h>
 
 void	ft_error(char *errormsg);
+char	*get_path(char *cmd, char **envp);
 
 #endif
