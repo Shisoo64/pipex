@@ -6,7 +6,7 @@
 #    By: rlaforge <rlaforge@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/18 16:20:40 by rlaforge          #+#    #+#              #
-#    Updated: 2022/08/23 15:17:37 by rlaforge         ###   ########.fr        #
+#    Updated: 2022/10/28 14:26:44 by rlaforge         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,7 +75,7 @@ all : $(NAME)
 
 $(NAME) : $(OBJS)
 	$(CLIB) $(NAME) $(OBJS)
-	@echo "\033[0;32m📚 LibFT compiled!\033[0m"
+	@echo "\e[1A\e[K\033[0;32m📚 LibFT compiled!\033[0m"
 
 clean :
 	rm -f $(OBJS)

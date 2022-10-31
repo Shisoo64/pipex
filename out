@@ -3,4 +3,5 @@ libft
 Makefile
 out
 pipex
+pipex-tester
 src

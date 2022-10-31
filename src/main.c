@@ -6,7 +6,7 @@
 /*   By: rlaforge <rlaforge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 15:39:33 by rlaforge          #+#    #+#             */
-/*   Updated: 2022/10/27 18:58:00 by rlaforge         ###   ########.fr       */
+/*   Updated: 2022/10/28 14:04:58 by rlaforge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	cmd1(char **av, char **envp, int pipefd[2])
 	}
 	free(args);
 	free(path);
+	exit(0);
 }
 
 void	cmd2(char **av, char **envp, int pipefd[2])
@@ -58,6 +59,7 @@ void	cmd2(char **av, char **envp, int pipefd[2])
 	}
 	free(args);
 	free(path);
+	exit(0);
 }
 
 int	main(int ac, char **av, char **envp)
