@@ -6,7 +6,7 @@
 /*   By: rlaforge <rlaforge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 13:45:55 by rlaforge          #+#    #+#             */
-/*   Updated: 2022/10/27 18:53:59 by rlaforge         ###   ########.fr       */
+/*   Updated: 2022/11/01 18:28:17 by rlaforge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,12 @@ char	*create_path(char *cmd, char **envp)
 	i = 0;
 	while (path_list[i])
 	{
-		path = strjoin_pipex(path_list[i++], cmd);
+		path = strjoin_pipex(path_list[i], cmd);
+		free(path_list[i++]);
 		if (!access(path, X_OK))
 		{
+			while (path_list[i])
+				free(path_list[i++]);
 			free(path_list);
 			return (path);
 		}
@@ -58,18 +61,17 @@ char	*get_path(char *cmd, char **envp)
 {
 	char	*path;
 
+	if (!cmd)
+		return (NULL);
 	if (cmd[0] == '/' || cmd[0] == '.')
 	{
 		path = ft_strdup(cmd);
 		if (!access(path, X_OK))
 			return (path);
 	}
-	else
-	{
-		path = create_path(cmd, envp);
-		if (path)
-			return (path);
-	}
+	path = create_path(cmd, envp);
+	if (path)
+		return (path);
 	free(path);
 	return (NULL);
 }
