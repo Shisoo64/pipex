@@ -22,14 +22,14 @@ $(LIBFT) :
 $(NAME) : comp $(OBJS) $(LIBFT)
 	$(CC) $(OBJS) $(CFLAGS) -Llibft -lft  -o $(NAME)
 	@echo "\033[1;32m📦 Program compiled!\033[0m"
-	@echo "\e[1;5m   <+><+><+><+><+>\033[0m"
+	@echo "\e[1m   <+><+><+><+><+>\033[0m"
 
 commit :
 	git add *
 	git commit -m "Update"
 
 comp :
-	@echo "\e[1;5m   <+><+><+><+><+>\033[0m"
+	@echo "\e[1m   <+><+><+><+><+>\033[0m"
 	@echo "\e[1;5m🗜️  Program compiling...\033[0m"
 
 clean :
@@ -39,10 +39,10 @@ clean :
 
 fclean : clean
 	rm -rf $(NAME)
-	@echo "\e[1A\e[1;5m🧹 Project and executable cleaned!\033[0m"
+	@echo "\e[1A\e[1m🧹 Project and executable cleaned!\033[0m"
 
 re : fclean all
-	@echo "\e[1;5m🗜️  Project has been ReMake!\033[0m"
+	@echo "\e[5A\e[1m🗜️  Project has been ReMake!\033[0m"
 
 .PHONY : all re clean fclean
 .SILENT :
