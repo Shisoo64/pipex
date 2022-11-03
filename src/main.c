@@ -6,7 +6,7 @@
 /*   By: rlaforge <rlaforge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 15:39:33 by rlaforge          #+#    #+#             */
-/*   Updated: 2022/11/01 18:50:00 by rlaforge         ###   ########.fr       */
+/*   Updated: 2022/11/03 14:29:19 by rlaforge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ void	cmd1(char **av, char **envp, int pipefd[2])
 	dup2(fd_in, STDIN_FILENO);
 	dup2(pipefd[1], STDOUT_FILENO);
 	close(fd_in);
-	close(pipefd[0]);
-	close(pipefd[1]);
+	close_pipe(pipefd);
 	if (!path || (execve(path, args, envp)) == -1)
 	{
 		free(path);
@@ -38,8 +37,6 @@ void	cmd1(char **av, char **envp, int pipefd[2])
 		free(args);
 		ft_error(av[2]);
 	}
-	free(args);
-	free(path);
 	exit(1);
 }
 
@@ -59,8 +56,7 @@ void	cmd2(char **av, char **envp, int pipefd[2])
 	dup2(fd_out, STDOUT_FILENO);
 	dup2(pipefd[0], STDIN_FILENO);
 	close(fd_out);
-	//close(pipefd[0]);
-	close(pipefd[1]);
+	close_pipe(pipefd);
 	if (!path || (execve(path, args, envp)) == -1)
 	{
 		free(path);
@@ -74,7 +70,7 @@ void	cmd2(char **av, char **envp, int pipefd[2])
 
 int	main(int ac, char **av, char **envp)
 {
-	int	pid;
+	int	pid[2];
 	int	pipefd[2];
 
 	if (ac < 5)
@@ -84,14 +80,18 @@ int	main(int ac, char **av, char **envp)
 	}
 	if (pipe(pipefd) == -1)
 		ft_error("Error PIPE");
-	pid = fork();
-	if (pid == -1)
+	pid[0] = fork();
+	if (pid[0] == -1)
 		ft_error("Error FORK");
-	else if (pid == 0)
+	else if (pid[0] == 0)
 		cmd1(av, envp, pipefd);
-	waitpid(pid, NULL, -1);
-	close(pipefd[1]);
-	cmd2(av, envp, pipefd);
-	close(pipefd[0]);
+	pid[1] = fork();
+	if (pid[1] == -1)
+		ft_error("Error FORK");
+	else if (pid[1] == 0)
+		cmd2(av, envp, pipefd);
+	close_pipe(pipefd);
+	waitpid(pid[0], NULL, 0);
+	waitpid(pid[1], NULL, 0);
 	return (0);
 }

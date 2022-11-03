@@ -6,11 +6,17 @@
 /*   By: rlaforge <rlaforge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/20 13:45:55 by rlaforge          #+#    #+#             */
-/*   Updated: 2022/11/01 18:28:17 by rlaforge         ###   ########.fr       */
+/*   Updated: 2022/11/02 16:23:46 by rlaforge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	close_pipe(int fds[2])
+{
+	close(fds[0]);
+	close(fds[1]);
+}
 
 char	*strjoin_pipex(char *s1, char *s2)
 {
