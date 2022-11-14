@@ -1,13 +1,13 @@
 SRCS =	src/main.c \
 	src/utils.c
 
+NAME = pipex
+
 CC = gcc
 
 CFLAGS = -g -Wall -Wextra -Werror
 
 LIBFT = libft/libft.a
-
-NAME = pipex
 
 OBJS = $(SRCS:.c=.o)
 
@@ -21,7 +21,7 @@ $(LIBFT) :
 
 $(NAME) : compiling $(OBJS) $(LIBFT)
 	$(CC) $(OBJS) $(CFLAGS) -Llibft -lft  -o $(NAME)
-	@echo "\033[1;32m📦 Program compiled!\033[0m"
+	@echo "\033[1;32m📦 $(NAME) compiled!\033[0m"
 	@echo "\e[1m   <+><+><+><+><+>\033[0m"
 
 commit :
@@ -30,19 +30,19 @@ commit :
 
 compiling :
 	@echo "\e[1m   <+><+><+><+><+>\033[0m"
-	@echo "\e[1;5m🗜️  Program compiling...\033[0m"
+	@echo "\e[1;5m🗜️  $(NAME) compiling...\033[0m"
 
 clean :
 	rm -f $(OBJS)
 	make -C libft/ fclean
-	@echo "\033[m🧹 Project cleaned!\033[0m"
+	@echo "\033[m🧹 $(NAME) binary files has been cleaned!\033[0m"
 
 fclean : clean
 	rm -rf $(NAME)
-	@echo "\e[1A\e[1m🧹 Project and executable cleaned!\033[0m"
+	@echo "\e[1A\e[1m🧹 $(NAME) binary files and executable cleaned!\033[0m"
 
 re : fclean all
-	@echo "\e[5A\e[1m🗜️  Project has been ReMake\e[1;5m!       \033[0m"
+	@echo "\e[5A\e[1m🗜️  $(NAME) has been ReMake\e[1;5m!                   \033[0m"
 
 .PHONY : all re clean fclean
 .SILENT :

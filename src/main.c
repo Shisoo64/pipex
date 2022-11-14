@@ -6,7 +6,7 @@
 /*   By: rlaforge <rlaforge@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/26 15:39:33 by rlaforge          #+#    #+#             */
-/*   Updated: 2022/11/03 14:29:19 by rlaforge         ###   ########.fr       */
+/*   Updated: 2022/11/14 15:01:01 by rlaforge         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	main(int ac, char **av, char **envp)
 	int	pid[2];
 	int	pipefd[2];
 
-	if (ac < 5)
+	if (ac != 5)
 	{
 		ft_putendl_fd("Wrong arguments number", 2);
 		return (1);
